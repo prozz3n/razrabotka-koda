@@ -1,0 +1,121 @@
+<Page x:Class="Desktop.View.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="#F5F6FA"
+      FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="White" Padding="28,14">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Image Source="pack://application:,,,/images/logo.png" Width="34" Height="34" />
+                    <TextBlock Text="Todo" FontSize="20" FontWeight="Bold"
+                               Foreground="#2D3436" VerticalAlignment="Center"
+                               Margin="12,0,0,0" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="История" Style="{StaticResource GhostButton}"
+                            Margin="0,0,6,0" Click="History_Click" />
+                    <Button Content="+ Добавить" Style="{StaticResource GhostButton}"
+                            Margin="0,0,10,0" Click="AddTask_Click" />
+                    <Ellipse Width="36" Height="36" Fill="#EEF0FB" />
+                    <TextBlock Text="{Binding UserName}" VerticalAlignment="Center"
+                               Margin="10,0,18,0" FontSize="14" Foreground="#2D3436" />
+                    <Button Content="Выйти" Style="{StaticResource GhostButton}"
+                            Click="Logout_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Categories}"
+                 SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0"
+                 Margin="24,18,24,6"
+                 ItemContainerStyle="{StaticResource CategoryItemStyle}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontWeight="SemiBold" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Row="2" Margin="28,6,28,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="380" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="White" CornerRadius="14" Padding="10">
+                <ListBox x:Name="TaskList" ItemsSource="{Binding TasksView}"
+                         SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                         BorderThickness="0" Background="Transparent"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding IsDone, Mode=TwoWay}"
+                                          VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Text="{Binding Title}"
+                                           Margin="12,0" VerticalAlignment="Center"
+                                           FontSize="15" Foreground="#2D3436" />
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding Date, StringFormat=dd.MM.yyyy}"
+                                           Foreground="#B2BEC3" VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <Border Grid.Column="2" Background="White" CornerRadius="14" Padding="24">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="{Binding SelectedTask.Title}" FontSize="20"
+                                   FontWeight="Bold" TextWrapping="Wrap"
+                                   Foreground="#2D3436" />
+                        <TextBlock Text="{Binding SelectedTask.Category}"
+                                   Foreground="#6C5CE7" Margin="0,8,0,0"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding SelectedTask.Date, StringFormat=dd.MM.yyyy}"
+                                   Foreground="#B2BEC3" Margin="0,2,0,0" />
+                        <TextBlock Text="{Binding SelectedTask.Status}"
+                                   Margin="0,14,0,0" FontWeight="SemiBold"
+                                   Foreground="#00B894" />
+                        <TextBlock Text="{Binding SelectedTask.Description}"
+                                   TextWrapping="Wrap" Margin="0,18,0,0"
+                                   Foreground="#636E72" />
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Bottom">
+                        <Button Content="Готово" Style="{StaticResource PrimaryButton}"
+                                Click="Done_Click" />
+                        <Button Content="Удалить" Style="{StaticResource DangerButton}"
+                                Margin="0,10,0,0" Click="Delete_Click" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
